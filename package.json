@@ -53,7 +53,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-push": "npm ts-check && npm t"
+            "pre-push": "npm run ts-check && npm t"
         }
     }
 }
