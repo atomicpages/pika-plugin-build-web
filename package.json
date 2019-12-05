@@ -6,7 +6,8 @@
     "scripts": {
         "test": "cd test && npm t",
         "ts-check": "tsc --noEmit",
-        "build": "pika build"
+        "build": "pika build",
+        "version": "npm run build"
     },
     "repository": {
         "type": "git",
