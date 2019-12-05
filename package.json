@@ -1,0 +1,58 @@
+{
+    "name": "@djthoms/pika-plugin-build-web",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "cd test && npm t",
+        "ts-check": "tsc --noEmit",
+        "build": "pika build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/atomicpages/pika-plugin-build-web.git"
+    },
+    "author": "Dennis Thompson",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/atomicpages/pika-plugin-build-web/issues"
+    },
+    "homepage": "https://github.com/atomicpages/pika-plugin-build-web#readme",
+    "peerDependencies": {
+        "@pika/pack": "^0.5.0",
+        "@pika/plugin-build-web": "^0.8.1",
+        "typescript": ">=3.5.0"
+    },
+    "devDependencies": {
+        "@djthoms/eslint-config": "^2.0.1",
+        "@djthoms/prettier-config": "^1.0.0",
+        "@pika/pack": "^0.5.0",
+        "@pika/plugin-build-node": "^0.8.1",
+        "@pika/plugin-build-web": "^0.8.1",
+        "@pika/plugin-ts-standard-pkg": "^0.8.1",
+        "@rollup/plugin-strip": "^1.3.1",
+        "eslint": "^6.7.2",
+        "husky": "^3.1.0",
+        "prettier": "^1.19.1",
+        "typescript": "^3.7.3"
+    },
+    "prettier": "@djthoms/prettier-config",
+    "dependencies": {
+        "@rollup/plugin-json": "^4.0.0"
+    },
+    "@pika/pack": {
+        "pipeline": [
+            [
+                "@pika/plugin-ts-standard-pkg"
+            ],
+            [
+                "@pika/plugin-build-node"
+            ]
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-push": "npm ts-check && npm t"
+        }
+    }
+}
