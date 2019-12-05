@@ -2,9 +2,6 @@
 const fs = require('fs');
 const path = require('path');
 
-require('colors');
-const diff = require('diff');
-
 const pkg = path.join(__dirname, 'pkg');
 const folders = fs.readdirSync(pkg);
 
