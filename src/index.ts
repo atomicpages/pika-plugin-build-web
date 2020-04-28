@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { rollup } from 'rollup';
+import { rollup, RollupBuild } from 'rollup';
 import json from '@rollup/plugin-json';
 
 import { BuilderOptions as PikaBuilderOptions } from '@pika/types';
@@ -11,6 +11,7 @@ type BuilderOptions = Omit<PikaBuilderOptions, 'options'> & {
     options: {
         sourcemap?: boolean;
         plugins?: Plugins;
+        debug?: boolean;
     };
 };
 
@@ -41,35 +42,41 @@ export async function build({ out, options = {}, reporter }: BuilderOptions): Pr
     const writeToWeb = path.join(out, 'dist-web', 'index.js');
     const plugins = processPlugins(options.plugins);
 
-    const result = await rollup({
-        input: path.join(out, 'dist-src/index.js'),
-        plugins: [
-            json({
-                compact: true,
-                indent: '\t',
-                namedExports: true,
-            }),
-            ...plugins,
-        ],
-        onwarn: (warning, defaultOnWarnHandler) => {
-            // Unresolved external imports are expected
-            if (
-                warning.code === 'UNRESOLVED_IMPORT' &&
-                !(warning.source.startsWith('./') || warning.source.startsWith('../'))
-            ) {
-                return;
-            }
+    try {
+        const result = await rollup({
+            input: path.join(out, 'dist-src/index.js'),
+            plugins: [
+                json({
+                    compact: true,
+                    indent: '\t',
+                    namedExports: true,
+                }),
+                ...plugins,
+            ],
+            onwarn: (warning, defaultOnWarnHandler) => {
+                // Unresolved external imports are expected
+                if (
+                    warning.code === 'UNRESOLVED_IMPORT' &&
+                    !(warning.source.startsWith('./') || warning.source.startsWith('../'))
+                ) {
+                    return;
+                }
 
-            defaultOnWarnHandler(warning);
-        },
-    });
+                defaultOnWarnHandler(warning);
+            },
+        });
 
-    await result.write({
-        file: writeToWeb,
-        format: 'esm',
-        exports: 'named',
-        sourcemap: options.sourcemap === undefined ? true : options.sourcemap,
-    });
+        await result.write({
+            file: writeToWeb,
+            format: 'esm',
+            exports: 'named',
+            sourcemap: options.sourcemap === undefined ? true : options.sourcemap,
+        });
 
-    reporter.created(writeToWeb, 'module');
+        reporter.created(writeToWeb, 'module');
+    } catch (e) {
+        if (options.debug) {
+            console.error(e.message);
+        }
+    }
 }

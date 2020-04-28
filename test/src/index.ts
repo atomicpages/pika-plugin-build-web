@@ -1,4 +1,4 @@
-import foo from "./demo.json";
+import foo from './demo.json';
 
 debugger;
 console.log(foo);

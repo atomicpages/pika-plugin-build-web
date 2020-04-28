@@ -33,10 +33,7 @@ try {
     console.log('✔', 'all folders exists');
 
     assert(
-        fs
-            .readFileSync(path.join(__dirname, 'pkg/dist-web/index.js'))
-            .toString()
-            .trim() ===
+        fs.readFileSync(path.join(__dirname, 'pkg/dist-web/index.js')).toString().trim() ===
             `var foo=true;var foo$1 = {foo:foo};
 
 console.log(foo$1);
