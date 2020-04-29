@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { rollup, RollupBuild } from 'rollup';
+import { rollup } from 'rollup';
 import json from '@rollup/plugin-json';
 
 import { BuilderOptions as PikaBuilderOptions } from '@pika/types';
@@ -11,7 +11,7 @@ type BuilderOptions = Omit<PikaBuilderOptions, 'options'> & {
     options: {
         sourcemap?: boolean;
         plugins?: Plugins;
-        debug?: boolean;
+        debug?: boolean | 'trace';
     };
 };
 
@@ -76,7 +76,9 @@ export async function build({ out, options = {}, reporter }: BuilderOptions): Pr
         reporter.created(writeToWeb, 'module');
     } catch (e) {
         if (options.debug) {
-            console.error(e.message);
+            console.error(options.debug === 'trace' ? e : e.message);
         }
+
+        process.exit(1);
     }
 }

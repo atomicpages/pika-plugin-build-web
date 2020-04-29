@@ -63,13 +63,35 @@ For more information about @pika/pack & help getting started, [check out the mai
 
 All options are optional.
 
-| Option             | Type     | Default Value | Description                                                                                                                                                                                        |
-| ------------------ | -------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `"sourcemap"`      | boolean  | `true`        | Adds a [source map](https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/) for this build.                                                                                            |
-| `"minNodeVersion"` | string   | `"8"`         | This plugin will build your package for the current minimum [Node.js LTS](https://github.com/nodejs/Release) major version. This option allows you to target later versions of Node.js only.       |
-| `"entrypoint"`     | string   | `"main"`      | Customize the package.json manifest entrypoint set by this plugin. Accepts either a string, an array of strings, or `null` to disable entrypoint. Changing this is not recommended for most usage. |
-| `"plugins"`        | string[] | `[]`          | Configure rollup by adding extra plugins. Be sure to install all related rollup plugins otherwise the build will fail!                                                                             |
-| `"debug"`          | boolean  |               | Set true to enable debugging info on build failures                                                                                                                                                |
+| Option             | Type               | Default Value | Description                                                                                                                                                                                        |
+| ------------------ | ------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `"sourcemap"`      | boolean            | `true`        | Adds a [source map](https://www.html5rocks.com/en/tutorials/developertools/sourcemaps/) for this build.                                                                                            |
+| `"minNodeVersion"` | string             | `"8"`         | This plugin will build your package for the current minimum [Node.js LTS](https://github.com/nodejs/Release) major version. This option allows you to target later versions of Node.js only.       |
+| `"entrypoint"`     | string             | `"main"`      | Customize the package.json manifest entrypoint set by this plugin. Accepts either a string, an array of strings, or `null` to disable entrypoint. Changing this is not recommended for most usage. |
+| `"plugins"`        | string[]           | `[]`          | Configure rollup by adding extra plugins. Be sure to install all related rollup plugins otherwise the build will fail!                                                                             |
+| `"debug"`          | boolean \| 'trace' |               | Set true to enable debugging info on build failures                                                                                                                                                |
+
+## ES2020 Target Build Issues
+
+There are some known issues with supporting optional chaining and other ES2020 features when using `@pika/plugin-build-web`. Since there is no `babel` task in the web builder, you need to override the target in the standard ts builder:
+
+```json
+{
+    "@pika/pack": {
+        "pipeline": [
+            [
+                "@pika/plugin-ts-standard-pkg",
+                {
+                    "args": ["--target", "es2019"]
+                }
+            ],
+            [
+                "@djthoms/pika-plugin-build-web"
+            ]
+        ]
+    }
+}
+```
 
 ## Result
 
