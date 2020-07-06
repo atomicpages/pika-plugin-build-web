@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { rollup } from 'rollup';
-import json from '@rollup/plugin-json';
+import json, { RollupJsonOptions } from '@rollup/plugin-json';
 
 import { BuilderOptions as PikaBuilderOptions } from '@pika/types';
 
@@ -12,6 +12,7 @@ type BuilderOptions = Omit<PikaBuilderOptions, 'options'> & {
         sourcemap?: boolean;
         plugins?: Plugins;
         debug?: boolean | 'trace';
+        jsonConfig?: RollupJsonOptions;
     };
 };
 
@@ -48,8 +49,7 @@ export async function build({ out, options = {}, reporter }: BuilderOptions): Pr
             plugins: [
                 json({
                     compact: true,
-                    indent: '\t',
-                    namedExports: true,
+                    ...options.jsonConfig,
                 }),
                 ...plugins,
             ],
