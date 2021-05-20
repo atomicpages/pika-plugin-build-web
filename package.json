@@ -23,8 +23,8 @@
     },
     "homepage": "https://github.com/atomicpages/pika-plugin-build-web#readme",
     "peerDependencies": {
-        "@pika/pack": "^0.5.0",
-        "@pika/plugin-build-web": "^0.8.1",
+        "@pika/pack": ">=0.5.0",
+        "@pika/plugin-build-web": ">=0.8.1",
         "typescript": ">=3.5.0"
     },
     "devDependencies": {
